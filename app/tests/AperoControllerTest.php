@@ -1,8 +1,9 @@
 <?php
+
 class AperoControllerTest extends TestCase {
     protected $mock;
     protected $userData;
-
+    
     public function setUp() {
         parent::setup();
         Artisan::call('migrate');
@@ -18,6 +19,25 @@ class AperoControllerTest extends TestCase {
     }
     
     /**
+     * @test tag_count autoincrement on new post
+     */
+    public function testInitvalueTag(){     
+        Auth::attempt($this->userData, false);
+        $tag=Tag::findOrFail(2);
+        $this->assertEquals(0, $tag->count_apero);
+    }
+    
+    public function testIncrementsTag(){
+        for($i=1; $i<5; $i++){
+            Apero::create(['title'=>'test', 'date'=>'2015-10-10', 'tag_id'=>1]);
+            $this->assertEquals($i, Tag::find(1)->count_apero);
+        }
+        for($i=5; $i>0; $i--){
+            Apero::destroy($i);
+            $this->assertEquals($i-1, Tag::find(1)->count_apero);
+        }
+    }
+    /**
      * @test call aperos on apero list view
      */
     public function testHomeAperosDataView() {
@@ -31,6 +51,10 @@ class AperoControllerTest extends TestCase {
      * @test store apero
      */
     public function testStoreAperos(){
+        $mock = Mockery::mock('Swift_Mailer');
+        $this->app->make('mailer')->setSwiftMailer($mock);
+        $mock->shouldReceive('send')->once();
+        
         Auth::attempt($this->userData, false);        
         $this->call('POST', 'apero', ['title'=>'test', 'content'=>'test', 'tag'=>4, 'date'=>'2015-02-10']);
         $this->assertRedirectedToRoute('apero.index', null, ['message' => 'success']);
@@ -43,14 +67,5 @@ class AperoControllerTest extends TestCase {
         $this->call('POST', 'apero');
         $this->assertRedirectedToRoute('apero.create');
         $this->assertSessionHasErrors(['title', 'date']);
-    }
-    
-    /**
-     * @test tag_count autoincrement on new post
-     */
-    public function testInitvalueTag(){     
-        Auth::attempt($this->userData, false);
-        $tag=Tag::findOrFail(2);
-        $this->assertEquals(0, $tag->count_apero);
     }
 }

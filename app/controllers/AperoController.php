@@ -1,10 +1,13 @@
 <?php
+use repositories\AperoMailer;
 
 class AperoController extends \BaseController{
 
     protected $aperos;
+    protected $mailer;
 
-    public function __construct(Apero $apero){
+    public function __construct(Apero $apero, \repositories\AperoMailerInterface $mailer){
+        $this->mailer=$mailer;
         $this->aperos=$apero;
     }
     /**
@@ -60,6 +63,8 @@ class AperoController extends \BaseController{
         }
         $apero->user_id=Auth::user()->id;
         $apero->save();
+        
+        $apero->sendWarnMail();
         
         return Redirect::to('apero')
                         ->with('message', 'success');

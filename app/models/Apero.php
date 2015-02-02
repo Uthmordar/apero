@@ -16,4 +16,25 @@ class Apero extends Eloquent{
     public function tag(){
         return $this->belongsTo('Tag');
     }
+    
+    /**
+     * 
+     * @param type $apero
+     */
+    public function tagCount(){
+        if($this->tag){
+            $this->tag->count_apero=$this->tag->aperos()->count();
+            $this->tag->save();
+        }
+    }
+    /**
+     * 
+     * @param type $apero
+     */
+    public function sendWarnMail(){
+        Mail::queue('emails.warn', array('title'=>$this->title), function($message){
+            $message->from('us@example.com', 'Laravel Apero');
+            $message->to('tanguyrygodin@gmail.com', 'Tanguy Godin')->subject('Nouvel événement!');
+        });
+    }
 }
