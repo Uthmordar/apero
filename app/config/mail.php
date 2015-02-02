@@ -24,24 +24,24 @@ return array(
 	|
 	| Here you may provide the host address of the SMTP server used by your
 	| applications. A default option is provided that is compatible with
-	| the Mailgun mail service which will provide reliable deliveries.
+	| the Postmark mail service, which will provide reliable delivery.
 	|
 	*/
 
-	'host' => 'smtp.mailgun.org',
+	'host' => 'smtp.gmail.com',
 
 	/*
 	|--------------------------------------------------------------------------
 	| SMTP Host Port
 	|--------------------------------------------------------------------------
 	|
-	| This is the SMTP port used by your application to deliver e-mails to
-	| users of the application. Like the host we have set this value to
-	| stay compatible with the Mailgun e-mail application by default.
+	| This is the SMTP port used by your application to delivery e-mails to
+	| users of your application. Like the host we have set this value to
+	| stay compatible with the Postmark e-mail application by default.
 	|
 	*/
 
-	'port' => 587,
+	'port' => 465,
 
 	/*
 	|--------------------------------------------------------------------------
@@ -67,7 +67,7 @@ return array(
 	|
 	*/
 
-	'encryption' => 'tls',
+	'encryption' => 'ssl',
 
 	/*
 	|--------------------------------------------------------------------------
@@ -80,7 +80,7 @@ return array(
 	|
 	*/
 
-	'username' => null,
+	'username' => 'redirectgodin@gmail.com',
 
 	/*
 	|--------------------------------------------------------------------------
@@ -93,18 +93,7 @@ return array(
 	|
 	*/
 
-	'password' => null,
-
-	/*
-	|--------------------------------------------------------------------------
-	| Sendmail System Path
-	|--------------------------------------------------------------------------
-	|
-	| When using the "sendmail" driver to send e-mails, we will need to know
-	| the path to where Sendmail lives on this server. A default path has
-	| been provided here, which will work well on most of your systems.
-	|
-	*/
+	'password' => 'redirect2013godin',
 
 	'sendmail' => '/usr/sbin/sendmail -bs',
 

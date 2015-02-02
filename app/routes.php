@@ -10,8 +10,13 @@
 | and give it the Closure to execute when that URI is requested.
 |
 */
-
-Route::get('/', function()
-{
-	return View::make('hello');
+Route::group(['before' => 'auth.basic'], function(){
+    Route::resource('apero', 'AperoController');
 });
+
+Route::get('/create_apero', ['before'=>'auth', 'uses'=>'AperoController@create']);
+
+Route::get('/', function(){ return View::make('hello');});
+
+Route::get('/login', function(){ return View::make('apero.authentification', array('title' => 'authentification'));});
+Route::post('/authentification', ['before' => 'csrf', 'uses' => 'AuthController@checkUser']);

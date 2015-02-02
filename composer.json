@@ -12,6 +12,10 @@
         "behat/mink-goutte-driver" : "*",
 		"behat/mink-selenium2-driver" : "*"
 	},
+	"require-dev": {
+            "mockery/mockery": "dev-master@dev",
+            "phpunit/phpunit": "~4.0"
+	},
 	"autoload": {
 		"classmap": [
 			"app/commands",
@@ -19,7 +23,8 @@
 			"app/models",
 			"app/database/migrations",
 			"app/database/seeds",
-			"app/tests/TestCase.php"
+			"app/tests/TestCase.php",
+			"app/lib"
 		]
 	},
 	"scripts": {
