@@ -17,11 +17,8 @@
 @stop
 
 @section('content')
-    @if(!empty($aperos))
-        @foreach($aperos as $apero)
-        <h2><a href="{{url('/apero/'.$apero->id)}}">{{$apero->title}}</a></h2>
-        @endforeach
-    @else
-    <p>Pas d'apéro</p>
+    @if(!empty($apero))
+        <h2>{{$apero->title}}</h2>
+        <p>{{$apero->content}}</p>
     @endif
 @stop

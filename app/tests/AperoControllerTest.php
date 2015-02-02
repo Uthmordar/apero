@@ -48,13 +48,9 @@ class AperoControllerTest extends TestCase {
     /**
      * @test tag_count autoincrement on new post
      */
-    public function testAutoincrementTag(){
-        /*$this->tagMock->shouldReceive('send')->once();
-        $this->app->instance('Mail', $this->tagMock);*/
-        
+    public function testInitvalueTag(){     
         Auth::attempt($this->userData, false);
         $tag=Tag::findOrFail(2);
         $this->assertEquals(0, $tag->count_apero);
-        $this->call('POST', 'apero', ['title'=>'test', 'content'=>'test', 'tag'=>2, 'date'=>'2015-02-10']);
     }
 }

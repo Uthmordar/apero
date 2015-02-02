@@ -99,9 +99,9 @@ class AperoController extends \BaseController{
      * @param  int  $id
      * @return Response
      */
-    public function show($id)
-    {
-        //
+    public function show($id){
+        $apero=Apero::findOrFail($id);
+        return View::make('aperos.show', compact('apero'));
     }
 
     /**
