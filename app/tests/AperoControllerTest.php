@@ -19,7 +19,7 @@ class AperoControllerTest extends TestCase {
     }
     
     /**
-     * @test tag_count autoincrement on new post
+     * @test tag_count default value
      */
     public function testInitvalueTag(){     
         Auth::attempt($this->userData, false);
@@ -27,6 +27,9 @@ class AperoControllerTest extends TestCase {
         $this->assertEquals(0, $tag->count_apero);
     }
     
+    /**
+     * @test tag_count autoincrement on new post
+     */
     public function testIncrementsTag(){
         for($i=1; $i<5; $i++){
             Apero::create(['title'=>'test', 'date'=>'2015-10-10', 'tag_id'=>1]);
@@ -53,11 +56,18 @@ class AperoControllerTest extends TestCase {
     public function testStoreAperos(){
         $mock = Mockery::mock('Swift_Mailer');
         $this->app->make('mailer')->setSwiftMailer($mock);
-        $mock->shouldReceive('send')->once();
+        $mock->shouldReceive('send')->twice();
         
         Auth::attempt($this->userData, false);        
         $this->call('POST', 'apero', ['title'=>'test', 'content'=>'test', 'tag'=>4, 'date'=>'2015-02-10']);
         $this->assertRedirectedToRoute('apero.index', null, ['message' => 'success']);
+    }
+    
+    /**
+     * @expectedException RuntimeException
+     */
+    public function testStoreAperoNoUser(){     
+        $this->call('POST', 'apero', ['title'=>'test', 'content'=>'test', 'tag'=>4, 'date'=>'2015-02-10']);
     }
     
     /**

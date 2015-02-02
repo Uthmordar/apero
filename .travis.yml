@@ -11,4 +11,3 @@ before_script:
   - "mysql -utravis -e 'create database if not exists `laravelunit`;'"
 script:
   - vendor/bin/phpunit
-  - bin/behat --profile=dev

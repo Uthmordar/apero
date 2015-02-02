@@ -54,7 +54,7 @@ return array(
 	|
 	*/
 
-	'from' => array('address' => null, 'name' => null),
+	'from' => array('address' => 'tanguyrygodin@gmail.com', 'name' => 'Uthmordar'),
 
 	/*
 	|--------------------------------------------------------------------------
@@ -80,7 +80,7 @@ return array(
 	|
 	*/
 
-	'username' => 'redirectgodin@gmail.com',
+	'username' => getenv('SMTP_USERNAME'),
 
 	/*
 	|--------------------------------------------------------------------------
@@ -93,7 +93,7 @@ return array(
 	|
 	*/
 
-	'password' => 'redirect2013godin',
+	'password' => getenv('SMTP_PASSWORD'),
 
 	'sendmail' => '/usr/sbin/sendmail -bs',
 

@@ -1,14 +1,17 @@
 <?php
-use repositories\AperoMailer;
+use repositories\UserMailer as Mailer;
+use repositories\UploadImage;
 
 class AperoController extends \BaseController{
 
     protected $aperos;
     protected $mailer;
+    protected $upload;
 
-    public function __construct(Apero $apero, \repositories\AperoMailerInterface $mailer){
+    public function __construct(Apero $apero, Mailer $mailer, UploadImage $uploadImage){
         $this->mailer=$mailer;
         $this->aperos=$apero;
+        $this->upload=$uploadImage;
     }
     /**
      * Display a listing of the resource.
@@ -50,7 +53,7 @@ class AperoController extends \BaseController{
         $apero->content=($input['content'])? $input['content'] : '';
         $apero->date=strtotime($input['date']);
         if(Input::hasfile('file')){
-            $apero->url_thumbnail=$this->uploadImage();
+            $apero->url_thumbnail=$this->upload->uploadImage('messageAperoCreate', [120, 120]);
         }
         $apero->status='publish';
         if(!Tag::findOrFail($input['tag'])){
@@ -64,40 +67,14 @@ class AperoController extends \BaseController{
         $apero->user_id=Auth::user()->id;
         $apero->save();
         
-        $apero->sendWarnMail();
+        $user=Auth::user();
+        $this->mailer->warnApero($user, $apero->title);
+        $this->mailer->warnAdminApero($user, $apero->title);
         
         return Redirect::to('apero')
                         ->with('message', 'success');
     }
     
-    public function uploadImage(){
-        if(Input::hasfile('file')) {
-            $file = Input::file('file');
-            $files = [$file];
-            $rules = ['image' => 'image|mime:jpg,png,gif, jpeg|max:3000'];
-            $validator = Validator::make($files, $rules);
-
-            $fileTrueName = $file->getClientOriginalName();
-            $fileExtension = $file->getClientOriginalExtension();
-            $fileThumb = $file;
-
-            $destinationPath = 'public/uploads/';
-            $filename = str_random(15) . '.' . $fileExtension;
-
-            $thumbPath = $destinationPath . '_min/' . $filename;
-            // fonction de resize des images
-            HelperImage::thumb($fileThumb, 50, 50, $thumbPath);
-
-            $upload_success = $file->move($destinationPath, $filename);
-
-            if ($upload_success) {
-                return $filename;
-            }else{
-                Session::flash('messageAperoCreate', "<p class='error bg-danger'><span class='glyphicon glyphicon-remove' style='color:red;'></span>Problème d'upload.</p>");
-                return Redirect::back();
-            }
-        }
-    }
     /**
      * Display the specified resource.
      *
@@ -115,8 +92,7 @@ class AperoController extends \BaseController{
      * @param  int  $id
      * @return Response
      */
-    public function edit($id)
-    {
+    public function edit($id){
         //
     }
 
@@ -126,8 +102,7 @@ class AperoController extends \BaseController{
      * @param  int  $id
      * @return Response
      */
-    public function update($id)
-    {
+    public function update($id){
         
     }
 
@@ -137,9 +112,7 @@ class AperoController extends \BaseController{
      * @param  int  $id
      * @return Response
      */
-    public function destroy($id)
-    {
+    public function destroy($id){
         
     }
-
 }
