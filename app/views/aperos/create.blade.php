@@ -9,10 +9,10 @@
 
 @section('menu')
     @if(Auth::check())
-            <li><a href="{{url('/')}}" {{HelperBlog::isHome()}}>Home</a></li>
-            <li><a href="{{url('/liste_apero')}}" {{HelperBlog::isPage('liste_aperos')}}>Rechercher un apéro</a></li>
-            <li {{HelperBlog::isPage('create_apero')}}><a href="{{url('/create_apero')}}">Create Apero</a></li>
-            <li><a href="{{url('page/logOut')}}" {{HelperBlog::isPage('logOut')}}>Log out</a></li>
+        <li><a href="{{url('/')}}" {{HelperBlog::isHome()}}>Home</a></li>
+        <li {{HelperBlog::isPage('list_apero')}}><a href="{{url('/apero')}}">Rechercher un apéro</a></li>
+        <li {{HelperBlog::isPage('create_apero')}}><a href="{{url('/create_apero')}}">Create Apero</a></li>
+        <li><a href="{{url('logOut')}}" {{HelperBlog::isPage('logOut')}}>Log out</a></li>
     @endif
 @stop
 

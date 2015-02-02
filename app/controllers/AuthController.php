@@ -30,7 +30,6 @@ class AuthController extends BaseController {
 
     public function logOut(){
         $user=Auth::user();
-        $user->updated_at=Carbon::now();
         $user->save();
 
         Auth::logout();

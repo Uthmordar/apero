@@ -18,5 +18,6 @@ Route::get('/create_apero', ['before'=>'auth', 'uses'=>'AperoController@create']
 
 Route::get('/', function(){ return View::make('hello');});
 
-Route::get('/login', function(){ return View::make('apero.authentification', array('title' => 'authentification'));});
+Route::get('/login', function(){ return View::make('aperos.authentification', array('title' => 'authentification'));});
+Route::get('/logOut', ['before'=>'auth', 'uses'=>'AuthController@logOut']);
 Route::post('/authentification', ['before' => 'csrf', 'uses' => 'AuthController@checkUser']);

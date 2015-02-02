@@ -15,6 +15,7 @@ class CreateUsersTable extends Migration {
                 $table->increments('id');
                 $table->string('name')->unique();
                 $table->string('password');
+                $table->string('remember_token');
                 $table->enum('status', array('offline', 'online'))->default('offline');
                 $table->enum('role', array('visitor', 'administrator'))->default('visitor');
                 $table->timestamps();
