@@ -76,27 +76,4 @@ class AperoControllerTest extends TestCase {
         $this->assertRedirectedToRoute('apero.create');
         $this->assertSessionHasErrors(['title', 'date']);
     }
-    
-    /**
-     * @test tag_count default value
-     */
-    public function testInitvalueTag(){     
-        Auth::attempt($this->userData, false);
-        $tag=Tag::findOrFail(2);
-        $this->assertEquals(0, $tag->count_apero);
-    }
-    
-    /**
-     * @test tag_count autoincrement on new post
-     */
-    public function testIncrementsTag(){
-        for($i=1; $i<5; $i++){
-            Apero::create(['title'=>'test', 'date'=>'2015-10-10', 'tag_id'=>1]);
-            $this->assertEquals($i, Tag::find(1)->count_apero);
-        }
-        for($i=5; $i>0; $i--){
-            Apero::destroy($i);
-            $this->assertEquals($i-1, Tag::find(1)->count_apero);
-        }
-    }
 }

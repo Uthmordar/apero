@@ -20,7 +20,7 @@ class AperoController extends \BaseController{
      */
     public function index(){
         if(empty($_GET) || isset($_GET['page'])){
-            $aperos=DB::table('aperos')->paginate(2);
+            $aperos=DB::table('aperos')->paginate(20);
             $links=$aperos->links();
             return View::make('aperos.index', ['aperos'=>$aperos, 'links'=>$links]);
         }
@@ -75,7 +75,7 @@ class AperoController extends \BaseController{
         $apero->content=($input['content'])? $input['content'] : '';
         $apero->date=strtotime($input['date']);
         if(Input::hasfile('file')){
-            $apero->url_thumbnail=$this->upload->uploadImage('messageAperoCreate', [120, 120]);
+            $apero->url_thumbnail=$this->upload->uploadImage(Input::file('file'), 'messageAperoCreate', [120, 120]);
         }
         $apero->status='publish';
         if(!Tag::findOrFail($input['tag'])){
@@ -87,12 +87,14 @@ class AperoController extends \BaseController{
             throw new \RuntimeException('No user');
         }
         $apero->user_id=Auth::user()->id;
+        $apero->created_at=time();
         $apero->save();
         
         $user=Auth::user();
         $this->mailer->warnApero($user, $apero->title);
         $this->mailer->warnAdminApero($user, $apero->title);
         
+        Session::flash('messageAperoCreate', "<p class='success bg-success'><span class='glyphicon glyphicon-success' style='color:green;'></span>Success</p>");
         return Redirect::to('apero')
                         ->with('message', 'success');
     }

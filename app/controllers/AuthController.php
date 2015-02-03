@@ -20,7 +20,7 @@ class AuthController extends BaseController {
             $remember=Input::get('remember');
 
             if(Auth::attempt($userData, $remember)){
-                return Redirect::to('/create_apero');
+                return Redirect::to('/apero/create');
             }else{
                 Session::flash('message', '<p>Pas de correspondance username/password.</p>');
                 return Redirect::back();

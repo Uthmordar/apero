@@ -39,6 +39,6 @@ class Apero extends Eloquent{
     }
     
     public function filter(){
-        return ['title' => 'required', 'date'=>'required', 'file'=> 'mimes:jpeg,bmp,png'];
+        return ['title' => 'required', 'date'=>'required', 'image' => 'image|mime:jpg,png,gif, jpeg|max:3000'];
     }
 }

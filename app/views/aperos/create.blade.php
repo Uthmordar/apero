@@ -7,23 +7,13 @@
 	@endif
 @stop
 
-@section('menu')
-    @if(Auth::check())
-        <li><a href="{{url('/')}}" {{HelperBlog::isHome()}}>Home</a></li>
-        <li {{HelperBlog::isPage('list_apero')}}><a href="{{url('/apero')}}">Rechercher un apéro</a></li>
-        <li {{HelperBlog::isPage('create_apero')}}><a href="{{url('/create_apero')}}">Create Apero</a></li>
-        <li><a href="{{url('logOut')}}" {{HelperBlog::isPage('logOut')}}>Log out</a></li>
-    @endif
-@stop
-
-
 @section('content')
     @if(Auth::check())
         <div id='addAperoForm'>
             {{Form::open(['url'=>'apero', 'files'=>true, 'method'=>'POST'])}}
                 {{Session::get('messageAperoCreate')}}
                 <p>{{Form::label('title', 'Title')}}<br/>
-                {{Form::text('title', Input::old('tile'), array('placeholder'=>'titre', 'required'))}}</p>
+                {{Form::text('title', Input::old('title'), array('placeholder'=>'titre', 'required'))}}</p>
                 {{isset($errors)?'<p>'.$errors->first('title').'</p>': ''}}
                 <br/>	
                 {{Form::label('date', 'Date')}}<br/>
@@ -39,7 +29,7 @@
                 <br/>
                 {{Form::label( 'tag', 'Tag')}}
                 {{Form::select('tag', $tags)}}
-                {{Form::submit('Créer')}}
+                {{Form::submit('Submit')}}
             {{Form::close()}}
         </div>
     @endif

@@ -36,8 +36,14 @@ class LogContext extends MinkContext{
         if(!$this->app){
             $this->refreshApplication();
         }
+        Artisan::call('migrate');
+        Artisan::call('db:seed');
     }
  
+    public function tearDown() {
+       parent::tearDown();
+       Artisan::call('migrate:reset');
+    }
     /**
      * Creates the application.
      *
@@ -46,16 +52,9 @@ class LogContext extends MinkContext{
     public function createApplication(){
         $unitTesting = true;
         $testEnvironment = 'testing';
-        return require __DIR__.'/../../bootstrap/start.php';
+        return require __DIR__.'/../../../../bootstrap/start.php';
     }
     
-     /**
-     * @Given there are following users:
-     */
-    public function thereAreFollowingUsers(TableNode $table){
-        $this->user=$table;
-    }
-
      /**
      * @When I visit :arg1
      */
@@ -67,8 +66,7 @@ class LogContext extends MinkContext{
      * @When I submit I press :arg1
      */
     public function iSubmitIPress($arg1){
-       $this->pressButton($arg1);
-       
+       $this->pressButton($arg1); 
     }
 
     /**

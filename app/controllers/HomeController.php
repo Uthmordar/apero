@@ -1,7 +1,6 @@
 <?php
 
 class HomeController extends BaseController {
-
     /*
     |--------------------------------------------------------------------------
     | Default Home Controller
@@ -15,10 +14,12 @@ class HomeController extends BaseController {
     |
     */
     public function showHome(){
-            return View::make('home');
+        $apero=DB::table('aperos')->orderBy('created_at', 'desc')->first();
+        $tag=Tag::findOrFail($apero->tag_id);
+        return View::make('aperos.home', ['title'=>'Homepage', 'apero'=>$apero, 'tag'=>$tag]);
     }
 
     public function createApero(){
-            return View::make('aperos.create');
+        return View::make('aperos.create');
     }
 }

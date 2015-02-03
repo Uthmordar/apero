@@ -19,7 +19,7 @@ class CreateAperosTable extends Migration {
             $table->text('abstract');
             $table->text('content');
             $table->string('url_thumbnail');
-            $table->timestamp('date');
+            $table->integer('date')->unsigned();
             $table->enum('status', array('publish', 'unpublish', 'trash'))->default('unpublish');
             $table->foreign('user_id')->references('id')->on('users')->onDelete('SET NULL');
             $table->foreign('tag_id')->references('id')->on('tags')->onDelete('SET NULL');

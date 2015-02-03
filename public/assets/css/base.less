@@ -1,0 +1,107 @@
+@import 'mixin.less';
+//---------------------------------------
+// CONST
+//---------------------------------------
+
+//.font_face("../fonts/Dosis/dosis-regular", "Dosis", 'normal');
+
+//1.2rem for arial
+@font-size : 1.4rem;
+
+@font-family-default : 'Dosis', sans-serif;
+@font-size-default : 1.5rem;
+@bg-body-color : lighten(#9FA1A3, 20%);
+
+@color-black : #1d1d1b;
+@color-red : #b91212;
+@color-red-dark: #ba242a;
+@color-red-light: #bf0712;
+
+@color-rose: #EB5B5C;
+@color-time: #502951;
+@color-luminosity: #F6A541;
+@color-meteorology: #AA4859;
+@color-heating: #DB9186;
+@color-humidity: #1D89AA;
+@color-temperature: #49B19C;
+
+@color-grey : #aca39d;
+
+@margin : 1rem;
+@padding : 0.5rem;
+
+@width-wrapper	: 100%;
+
+//---------------------------------------
+//Rules
+//--------------------------------------
+
+html{
+    font-size : 62.5%;
+}
+		
+body{
+    width : 100%;
+    font-size	: @font-size-default;
+    font-family	: @font-family-default;
+    background : @bg-body-color;
+    /* ligature */
+    -moz-font-feature-settings: "liga=1, dlig=1"; 
+    -moz-font-feature-settings: "liga", "dlig"; /* pour FF 15+ */
+    -ms-font-feature-settings: "liga", "dlig"; 
+    -o-font-feature-settings: "liga", "dlig"; 
+    -webkit-font-feature-settings: "liga", "dlig"; 
+    font-feature-settings: "liga", "dlig";
+    text-rendering : optimizeLegibility;
+    -webkit-font-smoothing: subpixel-antialiased;
+    text-shadow : 0 0 -1px rgba(0,0,0,0.03);
+    overflow: hidden;
+}
+
+p, h1, h2, h3, li, a, textarea, input{
+    text-rendering : optimizeLegibility;
+    -webkit-font-smoothing: subpixel-antialiased;
+    text-shadow: 0 0 -1px rgba(0,0,0,0.03);
+    -moz-transform : translate3d(0,0,0);
+    -webkit-transform : translate3d(0,0,0);
+    -o-transform : translate3d(0,0,0);
+    -ms-transform : translate3d(0,0,0);
+    transform : translate3d(0,0,0);
+}
+body *{
+    max-width : 100%;
+}
+h1{
+    font-size : 5rem;
+}
+h2{
+    font-size : 4.2rem;
+}
+h3{
+    font-size : 3.4rem;
+    line-height : 3.8rem;
+}
+p{
+    font-size : 1.7*@font-size;
+    width : 60ex;
+    line-height : 2*@font-size;	 
+    -webkit-hyphens: auto;
+    -moz-hyphens: auto;
+    -ms-hyphens: auto;
+    -o-hyphens: auto;
+    hyphens: auto;
+}
+li{
+    -webkit-hyphens: auto;
+    -moz-hyphens: auto;
+    -ms-hyphens: auto;
+    -o-hyphens: auto;
+    hyphens: auto;
+}
+a{
+    text-decoration : none;
+    color : inherit;
+}
+.clear{
+    clear : both;
+}

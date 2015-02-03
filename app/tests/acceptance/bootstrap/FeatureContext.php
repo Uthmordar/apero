@@ -41,6 +41,6 @@ class FeatureContext implements Context, SnippetAcceptingContext{
  
         $testEnvironment = 'testing';
  
-        return require __DIR__.'/../../bootstrap/start.php';
+        return require __DIR__.'/../../../../bootstrap/start.php';
     }
 }

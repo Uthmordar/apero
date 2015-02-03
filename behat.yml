@@ -5,10 +5,17 @@ default:
       goutte: ~
       selenium2: ~
 
+  autoload:
+    '': %paths.base%/app/tests/acceptance/bootstrap
+
   suites:
-    core:
-      contexts: [FeatureContext, CreateContext]
-      filters: {tags: '@core'}
     log:
+      paths:
+        - %paths.base%/app/tests/acceptance
       contexts: [FeatureContext, LogContext]
       filters: {tags: '@log'}
+    core:
+      paths:
+        - %paths.base%/app/tests/acceptance
+      contexts: [FeatureContext, CreateContext]
+      filters: {tags: '@core'}

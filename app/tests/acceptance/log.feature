@@ -5,11 +5,6 @@ Feature: Sign in to the website
     As a visitor
     I need to be able to log in to the website
 
-    Background:
-        Given there are following users:
-            | name | email       | plain_password | enabled |
-            | bar      | bar@foo.com | foo            | yes     |
-
     Scenario: Log in with username and password
         Given I am on "login"
         When I fill in the following:

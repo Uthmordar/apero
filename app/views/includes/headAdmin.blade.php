@@ -12,5 +12,7 @@
 
             @show
         </title>
-        <link rel="stylesheet" href="{{asset('assets/bower_components/dist/css/bootstrap.min.css')}}" type="text/css" media="screen">
+        <link rel="stylesheet" href="{{asset('assets/bower_components/bootstrap/dist/css/bootstrap.min.css')}}" type="text/css" media="screen">
+        <link rel="stylesheet" href="{{asset('assets/css/base.css')}}" type="text/css" media="screen">
+        <link rel="stylesheet" href="{{asset('assets/css/index.css')}}" type="text/css" media="screen">
     </head>
