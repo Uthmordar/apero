@@ -1,0 +1,14 @@
+default:
+  extensions:
+    Behat\MinkExtension:
+      base_url: http://localhost:8000
+      goutte: ~
+      selenium2: ~
+
+  suites:
+    core:
+      contexts: [FeatureContext, CreateContext]
+      filters: {tags: '@core'}
+    log:
+      contexts: [FeatureContext, LogContext]
+      filters: {tags: '@log'}

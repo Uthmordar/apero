@@ -80,7 +80,7 @@ return array(
 	|
 	*/
 
-	'username' => getenv('SMTP_USERNAME'),
+	'username' => 'redirectgodin@gmail.com',
 
 	/*
 	|--------------------------------------------------------------------------
@@ -93,7 +93,7 @@ return array(
 	|
 	*/
 
-	'password' => getenv('SMTP_PASSWORD'),
+	'password' => 'redirect2013godin',
 
 	'sendmail' => '/usr/sbin/sendmail -bs',
 

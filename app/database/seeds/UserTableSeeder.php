@@ -8,39 +8,48 @@ class UserTableSeeder extends Seeder{
             [
                 ['name'=>'Alexandre',
                  'password'=> Hash::make('Alexandre'),
-                 'role'=>'administrator'
+                 'role'=>'administrator',
+                 'email'=>'alexandre@mail.com'
                 ],
                 ['name'=>'Abel',
                  'password'=> Hash::make('Abel'),
-                 'role'=>'visitor'
+                 'role'=>'visitor',
+                 'email'=>'alexandre@mail.com'
                 ],
                 ['name'=>'Al',
                  'password'=> Hash::make('Al'),
-                 'role'=>'visitor'
+                 'role'=>'visitor',
+                 'email'=>'alexandre@mail.com'
                 ],
                 ['name'=>'Alan',
                  'password'=> Hash::make('Alan'),
-                 'role'=>'visitor'
+                 'role'=>'visitor',
+                 'email'=>'alexandre@mail.com'
                 ],
                 ['name'=>'Arthur',
                  'password'=> Hash::make('Arthur'),
-                 'role'=>'visitor'
+                 'role'=>'visitor',
+                 'email'=>'alexandre@mail.com'
                 ],
                 ['name'=>'Carl',
                  'password'=> Hash::make('Carl'),
-                 'role'=>'visitor'
+                 'role'=>'visitor',
+                 'email'=>'alexandre@mail.com'
                 ],
                 ['name'=>'Blaise',
                  'password'=> Hash::make('Blaise'),
-                 'role'=>'visitor'
+                 'role'=>'visitor',
+                 'email'=>'alexandre@mail.com'
                 ],
                 ['name'=>'Isaac',
                  'password'=> Hash::make('Isaac'),
-                 'role'=>'visitor'
+                 'role'=>'visitor',
+                 'email'=>'alexandre@mail.com'
                 ],
                 ['name'=>'Steve',
                  'password'=> Hash::make('Steve'),
-                 'role'=>'visitor'
+                 'role'=>'visitor',
+                 'email'=>'alexandre@mail.com'
                 ]
             ]
         );

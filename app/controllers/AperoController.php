@@ -19,8 +19,24 @@ class AperoController extends \BaseController{
      * @return Response
      */
     public function index(){
-        $aperos=$this->aperos->all();
-        return View::make('aperos.index', compact('aperos'));
+        if(empty($_GET) || isset($_GET['page'])){
+            $aperos=DB::table('aperos')->paginate(2);
+            $links=$aperos->links();
+            return View::make('aperos.index', ['aperos'=>$aperos, 'links'=>$links]);
+        }
+        $cat=[];
+        foreach($_GET as $k=>$v){
+            if(is_int($k)){
+                $cat[]=intval($k);
+            }
+        }
+        if(!empty($cat)){
+            $aperos=DB::table('aperos')->whereIn('tag_id', $cat)->andWhere('title', 'LIKE', $_GET['title'])->paginate(2);
+        }else{
+            $aperos=DB::table('aperos')->where('title', 'LIKE', "%" . $_GET['title'] . "%")->paginate(2);
+        }
+        $links = $aperos->links();
+        return View::make('aperos.index', ['aperos'=>$aperos, 'links'=>$links]);
     }
 
     /**
@@ -41,9 +57,15 @@ class AperoController extends \BaseController{
      *
      * @return Response
      */
-    public function store(){
+    public function store(){        
         $input=Input::all();
-        $v=Validator::make($input, ['title' => 'required', 'date'=>'required']);
+        foreach($input as $k=>$v){
+            if(is_string($v)){
+                $input[$k]=strip_tags($v);
+            }
+        }
+        
+        $v=Validator::make($input, $this->aperos->filter());
         if($v->fails()){
             return Redirect::route('apero.create')->withInput()->withErrors($v->messages());
         }

@@ -14,8 +14,8 @@ class HomeController extends BaseController {
     |	Route::get('/', 'HomeController@showWelcome');
     |
     */
-    public function showWelcome(){
-            return View::make('hello');
+    public function showHome(){
+            return View::make('home');
     }
 
     public function createApero(){

@@ -37,4 +37,8 @@ class Apero extends Eloquent{
             $message->to('tanguyrygodin@gmail.com', 'Tanguy Godin')->subject('Nouvel événement!');
         });
     }
+    
+    public function filter(){
+        return ['title' => 'required', 'date'=>'required', 'file'=> 'mimes:jpeg,bmp,png'];
+    }
 }
