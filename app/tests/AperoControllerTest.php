@@ -71,7 +71,8 @@ class AperoControllerTest extends TestCase {
     /**
      * @test required field on form
      */
-    public function testFailStoreAperos(){        
+    public function testFailStoreAperos(){    
+        Auth::attempt($this->userData, false);
         $this->call('POST', 'apero');
         $this->assertRedirectedToRoute('apero.create');
         $this->assertSessionHasErrors(['title', 'date']);

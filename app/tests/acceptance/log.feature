@@ -11,7 +11,7 @@ Feature: Sign in to the website
             | name | Alexandre |
             | password | Alexandre |
         When I submit I press "Log in"
-        Then I should be redirected on "/create_apero"
+        Then I should be redirected on "/apero/create"
         And I should see link "Log out"
 
     Scenario: Log in with bad credentials

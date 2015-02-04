@@ -48,4 +48,29 @@ class Apero extends Eloquent{
     public function filter(){
         return $this->filter;
     }
+    
+    /**
+     * create apero from /apero/create
+     * @param type $apero
+     * @param type $input
+     * @return type
+     * @throws \RuntimeException
+     */
+    public function createApero($apero, $input){
+        $apero->title=$input['title'];
+        $apero->content=($input['content'])? $input['content'] : '';
+        $apero->date=strtotime($input['date']);
+        if(Input::hasfile('file')){
+            $apero->url_thumbnail=$this->upload->uploadImage(Input::file('file'), 'messageAperoCreate', [120, 120]);
+        }
+        $apero->status='publish';
+        if(!Tag::findOrFail($input['tag'])){
+            Session::flash('messageAperoCreate', "<p class='error bg-danger'><span class='glyphicon glyphicon-remove' style='color:red;'></span>Problème de tag.</p>");
+            throw new \RuntimeException('No tag');
+        }
+        $apero->tag_id=intval($input['tag']);
+        $apero->user_id=Auth::user()->id;
+        $apero->created_at=time();
+        return $apero;
+    }
 }

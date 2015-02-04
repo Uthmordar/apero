@@ -60,37 +60,29 @@ class AperoController extends \BaseController{
      *
      * @return Response
      */
-    public function store(){        
+    public function store(){
+        if(!Auth::user()){
+            Session::flash('messageAperoCreate', "<p class='error bg-danger'><span class='glyphicon glyphicon-remove' style='color:red;'></span>Auth user required.</p>");
+            throw new \RuntimeException('No user');
+        }
         $input=Input::all();
         foreach($input as $k=>$v){
             if(is_string($v)){
                 $input[$k]=strip_tags($v);
             }
         }
-        
+
         $v=Validator::make($input, $this->aperos->filter());
         if($v->fails()){
             return Redirect::route('apero.create')->withInput()->withErrors($v->messages());
         }
 
         $apero=new Apero;
-        $apero->title=$input['title'];
-        $apero->content=($input['content'])? $input['content'] : '';
-        $apero->date=strtotime($input['date']);
-        if(Input::hasfile('file')){
-            $apero->url_thumbnail=$this->upload->uploadImage(Input::file('file'), 'messageAperoCreate', [120, 120]);
+        try{
+            $this->aperos->createApero($apero, $input);
+        }catch(RuntimeException $e){
+            return Redirect::route('apero.create');
         }
-        $apero->status='publish';
-        if(!Tag::findOrFail($input['tag'])){
-            Session::flash('messageAperoCreate', "<p class='error bg-danger'><span class='glyphicon glyphicon-remove' style='color:red;'></span>Problème de tag.</p>");
-            return Redirect::back();
-        }
-        $apero->tag_id=intval($input['tag']);
-        if(!Auth::user()){
-            throw new \RuntimeException('No user');
-        }
-        $apero->user_id=Auth::user()->id;
-        $apero->created_at=time();
         $apero->save();
         
         $user=Auth::user();
@@ -98,8 +90,7 @@ class AperoController extends \BaseController{
         $this->mailer->warnAdminApero($user, $apero->title);
         
         Session::flash('messageAperoCreate', "<p class='success bg-success'><span class='glyphicon glyphicon-ok' style='color:green;'></span>Success</p>");
-        return Redirect::to('apero')
-                        ->with('message', 'success');
+        return Redirect::to('apero')->with('message', 'success');
     }
     
     /**
