@@ -1,88 +1,122 @@
 <?php
 
-class HelperImage {
-
+class HelperImage{
     protected static $MIME = array('image/jpg', 'image/jpeg', 'image/png', 'image/gif');
 
+    /**
+     * Generate thumb from image if jpg, jpeg, png or gif
+     * @param type $file original file
+     * @param type $thumbX choosen width
+     * @param type $thumbY choosen height
+     * @param type $path path to save
+     * @return boolean
+     * @throws \InvalidArgumentException
+     */
     public static function thumb($file, $thumbX, $thumbY, $path) {
-        //var_dump($file); die();
-        $fileTrueName = $file->getClientOriginalName();
-        $fileExtension = $file->getClientOriginalExtension();
-        // $file=$file['tmp_name'];
+        $fileTrueName=$file->getClientOriginalName();
+        $fileExtension=$file->getClientOriginalExtension();
 
-        $size = getimagesize($file);
-        $x = $size[0];
-        $y = $size[1];
+        $size=getimagesize($file);
+        $mime=$size['mime'];
 
-        $mime = $size['mime'];
-
-        if (!in_array($mime, HelperImage::$MIME)) {
-            return false;
+        if(!in_array($mime, HelperImage::$MIME)){
+            throw new \InvalidArgumentException('Not allowed MIME type');
         }
 
-        /* if(count(scandir(url('uploads/_min')))>200){
-          return false;
-          } */
-
-        $thumb = imagecreatetruecolor($thumbX, $thumbY);
-
-
-        if ($mime == HelperImage::$MIME[0]) {
-
-            $img = imagecreatefromjpg($file);
-            $copy = imagecopyresampled($thumb, $img, 0, 0, 0, 0, $thumbX, $thumbY, $x, $y);
-
-            header('Content-Type : ' . HelperImage::$MIME[0]);
-
-            imagejpg($thumb);
-            imagejpg($thumb, $path);
-
-            imagedestroy($img);
-            imagedestroy($thumb);
-
-            return true;
-        } else if ($mime == HelperImage::$MIME[1]) {
-
-            $img = imagecreatefromjpeg($file);
-            $copy = imagecopyresampled($thumb, $img, 0, 0, 0, 0, $thumbX, $thumbY, $x, $y);
-
-            header('Content-Type : ' . HelperImage::$MIME[1]);
-
-            imagejpeg($thumb);
-            imagejpeg($thumb, $path);
-
-            imagedestroy($img);
-            imagedestroy($thumb);
-
-            return true;
-        } else if ($mime == HelperImage::$MIME[2]) {
-
-            $img = imagecreatefrompng($file);
-            $copy = imagecopyresampled($thumb, $img, 0, 0, 0, 0, $thumbX, $thumbY, $x, $y);
-
-            header('Content-Type : ' . HelperImage::$MIME[2]);
-
-            imagepng($thumb);
-            imagepng($thumb, $path);
-
-            imagedestroy($img);
-            imagedestroy($thumb);
-
-            return true;
-        } else if ($mime == HelperImage::$MIME[3]) {
-
-            $img = imagecreatefromgif($file);
-            $copy = imagecopyresampled($thumb, $img, 0, 0, 0, 0, $thumbX, $thumbY, $x, $y);
-
-            header('Content-Type : ' . HelperImage::$MIME[3]);
-
-            imagegif($thumb);
-            imagegif($thumb, $path);
-
-            imagedestroy($img);
-            imagedestroy($thumb);
-
-            return true;
+        $thumb=imagecreatetruecolor($thumbX, $thumbY);
+        $data=['file'=>$file, 'x'=>$size[0], 'y'=>$size[1], 'mime'=>$mime, 'thumbX'=>$thumbX, 'thumbY'=>$thumbY, 'thumb'=>$thumb];
+        
+        if($mime==self::$MIME[0]){
+            self::imgJPG($path, $data);
+        }else if($mime==self::$MIME[1]){
+            self::imgJPEG($path, $data);
+        }else if($mime==self::$MIME[2]){
+            self::imgPNG($path, $data);
+        }else if($mime==self::$MIME[3]){
+            self::imgGIF($path, $data);
         }
+        return true;
+    }
+    
+    /**
+     * destroy temporary img generate from thumbify process
+     * @param type $img
+     * @param type $thumb
+     */
+    protected static function imgDestroy($img, $thumb){
+        imagedestroy($img);
+        imagedestroy($thumb);
+    }
+    
+    /**
+     * thumb for JPG MIME TYPE
+     * @param type $path
+     * @param type $data
+     */
+    protected static function imgJPG($path, $data){
+        $img=imagecreatefromjpg($data['file']);
+        imagecopyresampled($data['thumb'], $img, 0, 0, 0, 0, $data['thumbX'], $data['thumbY'], $data['x'], $data['y']);
+
+        header('Content-Type : ' . self::$MIME[0]);
+
+        imagejpg($data['thumb']);
+        imagejpg($data['thumb'], $path);
+
+        self::imgDestroy($img, $data['thumb']);
+    }
+    
+    /**
+     * thumb for JPEG
+     * @param type $path
+     * @param type $data
+     */
+    protected static function imgJPEG($path, $data){
+        $img=imagecreatefromjpeg($data['file']);
+        imagecopyresampled($data['thumb'], $img, 0, 0, 0, 0, $data['thumbX'], $data['thumbY'], $data['x'], $data['y']);
+
+        header('Content-Type : ' . self::$MIME[1]);
+
+        imagejpeg($data['thumb']);
+        imagejpeg($data['thumb'], $path);
+
+        self::imgDestroy($img, $data['thumb']);
+    }
+    
+    /**
+     * THUMB FOR PNG
+     * @param type $path
+     * @param type $data
+     */
+    protected static function imgPNG($path, $data){
+        $img=imagecreatefrompng($data['file']);
+        imagealphablending($data['thumb'], false);
+        imagesavealpha($data['thumb'],true);
+        $transparent=imagecolorallocatealpha($data['thumb'], 255, 255, 255, 127);
+        imagefilledrectangle($data['thumb'], 0, 0, $data['x'], $data['y'], $transparent);
+        imagecopyresampled($data['thumb'], $img, 0, 0, 0, 0, $data['thumbX'], $data['thumbY'], $data['x'], $data['y']);
+
+        header('Content-Type : ' . self::$MIME[2]);
+
+        imagepng($data['thumb']);
+        imagepng($data['thumb'], $path);
+
+        self::imgDestroy($img, $data['thumb']);
+    }
+    
+    /**
+     * thumb for GIF
+     * @param type $path
+     * @param type $data
+     */
+    protected static function imgGIF($path, $data){
+        $img=imagecreatefromgif($data['file']);
+        imagecopyresampled($data['thumb'], $img, 0, 0, 0, 0, $data['thumbX'], $data['thumbY'], $data['x'], $data['y']);
+
+        header('Content-Type : ' . self::$MIME[3]);
+
+        imagegif($data['thumb']);
+        imagegif($data['thumb'], $path);
+
+        self::imgDestroy($img, $data['thumb']);
     }
 }

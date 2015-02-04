@@ -7,7 +7,7 @@ class UserMailer extends Mailer{
         $view="emails.warn";
         $data=['title'=>$title];
         $subject="Nouvel apéro posté";
-        $userMail="tanguyrygodin@gmail.com";
+        $userMail=($user->email)? $user->email : "tanguyrygodin@gmail.com";
         
         return $this->sendTo($userMail, $subject, $view, $data);
     }

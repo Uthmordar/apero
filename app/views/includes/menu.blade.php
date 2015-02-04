@@ -1,15 +1,10 @@
-@if(isset($menuCat))
-	@if(Auth::check())
-		<li><a href="{{url('page/logOut')}}" {{HelperBlog::isPage('logOut')}}>Log out</a></li>
-	@else
-		<li><a href="{{url('page/log')}}" {{HelperBlog::isPage('log')}}>Log in</a></li>
-	@endif
-	<li><a href="{{url('page/users')}}" {{HelperBlog::isPage('users')}}>Users</a></li>
-	<li><a href="{{url('page/contact')}}" {{HelperBlog::isPage('contact')}}>Contact</a></li>
-	@if(Auth::check())
-		<li><a href="{{url('page/profile')}}" {{HelperBlog::isPage('profile')}}>Profile</a></li>
-	@endif
-	@foreach($menuCat as $cat)
-		<li><a href="{{url('cat/'.$cat->id)}}" {{HelperBlog::isCat($cat->id)}}>{{$cat->title}}</a></li>
-	@endforeach
+@if(Auth::check())
+    <li {{HelperMenu::isHome()}}><a href="{{url('/')}}">Home</a></li>
+    <li {{HelperMenu::isApRessource('apero')}}><a href="{{url('/apero')}}">Rechercher un apéro</a></li>
+    <li {{HelperMenu::isApRessource('create')}}><a href="{{url('/apero/create')}}">Create Apero</a></li>
+    <li {{HelperMenu::isPage('logOut')}}><a href="{{url('logOut')}}">Log out</a></li>
+@else
+    <li {{HelperMenu::isHome()}}><a href="{{url('/')}}">Home</a></li>
+    <li {{HelperMenu::isApRessource('apero')}}><a href="{{url('/apero')}}">Rechercher un apéro</a></li>
+    <li {{HelperMenu::isPage('logIn')}}><a href="{{url('login')}}">Log in</a></li>
 @endif

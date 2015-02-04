@@ -2,19 +2,19 @@
 
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 
-class AuthController extends BaseController {
-	
+class AuthController extends BaseController{
+    protected $users;
+    
+    public function __construct(User $user){
+        $this->users=$user;
+    }
+    
     public function checkUser(){
-        $rules=array(
-            'name'=>'required',
-            'password'=>'required'
-        );
-
-        $validator=Validator::make(Input::all(), $rules);
+        $validator=Validator::make(Input::all(), $this->users->getRules());
         if($validator->fails()){
             return Redirect::back()->withInput()->withErrors($validator);
         }else{
-            $userData= array();
+            $userData=[];
             $userData['name']=Input::get('name');
             $userData['password']=Input::get('password');
             $remember=Input::get('remember');

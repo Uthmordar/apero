@@ -15,8 +15,9 @@ class HomeController extends BaseController {
     */
     public function showHome(){
         $apero=DB::table('aperos')->orderBy('created_at', 'desc')->first();
-        $tag=Tag::findOrFail($apero->tag_id);
-        return View::make('aperos.home', ['title'=>'Homepage', 'apero'=>$apero, 'tag'=>$tag]);
+        $ap=Apero::findOrFail($apero->id);
+
+        return View::make('aperos.home', ['title'=>'Homepage', 'apero'=>$ap]);
     }
 
     public function createApero(){

@@ -11,8 +11,10 @@
 |
 */
 Route::group(['before' => 'auth.basic'], function(){
-    Route::resource('apero', 'AperoController');
+    Route::resource('apero', 'AperoController', ['only'=>['create', 'store', 'update', 'destroy']]);
 });
+Route::resource('apero', 'AperoController', ['only' => ['index', 'show']]);
+
 
 Route::get('/', 'HomeController@showHome');
 

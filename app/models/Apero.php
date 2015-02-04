@@ -3,22 +3,35 @@
 class Apero extends Eloquent{
     protected $guarded=['id'];
     protected $fillable=['title', 'content', 'date'];
+    protected $filter=[
+            'title'=>'required',
+            'date'=>'required',
+            'image'=>'image|mime:jpg,png,gif,jpeg|max:3000'
+        ];
     
     public static function boot(){
         parent::boot();
         Apero::observe(new AperoObserver);
     }
     
+    /**
+     * relation n->1  aperos->user
+     * @return type
+     */
     public function user(){
         return $this->belongsTo('User');
     }
     
+    /**
+     * relation n->1 aperos->tag
+     * @return type
+     */
     public function tag(){
         return $this->belongsTo('Tag');
     }
     
     /**
-     * 
+     * give number of aperos linked to apero tag
      * @param type $apero
      */
     public function tagCount(){
@@ -27,18 +40,12 @@ class Apero extends Eloquent{
             $this->tag->save();
         }
     }
+
     /**
-     * 
-     * @param type $apero
+     * filter for create form field
+     * @return type
      */
-    public function sendWarnMail(){
-        Mail::queue('emails.warn', array('title'=>$this->title), function($message){
-            $message->from('us@example.com', 'Laravel Apero');
-            $message->to('tanguyrygodin@gmail.com', 'Tanguy Godin')->subject('Nouvel événement!');
-        });
-    }
-    
     public function filter(){
-        return ['title' => 'required', 'date'=>'required', 'image' => 'image|mime:jpg,png,gif, jpeg|max:3000'];
+        return $this->filter;
     }
 }

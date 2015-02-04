@@ -7,11 +7,13 @@ class AperoController extends \BaseController{
     protected $aperos;
     protected $mailer;
     protected $upload;
+    protected $users;
 
-    public function __construct(Apero $apero, Mailer $mailer, UploadImage $uploadImage){
+    public function __construct(Apero $apero, Mailer $mailer, UploadImage $uploadImage, User $user){
         $this->mailer=$mailer;
         $this->aperos=$apero;
         $this->upload=$uploadImage;
+        $this->users=$user;
     }
     /**
      * Display a listing of the resource.
@@ -20,20 +22,21 @@ class AperoController extends \BaseController{
      */
     public function index(){
         if(empty($_GET) || isset($_GET['page'])){
-            $aperos=DB::table('aperos')->paginate(20);
+            $aperos=DB::table('aperos')->orderBy('created_at', 'desc')->paginate(2);
             $links=$aperos->links();
             return View::make('aperos.index', ['aperos'=>$aperos, 'links'=>$links]);
         }
+        $title=($_GET['title'])? strip_tags(filter_input(INPUT_GET, 'title')) : '';
         $cat=[];
         foreach($_GET as $k=>$v){
-            if(is_int($k)){
+            if(is_int($k) && Tag::find($k)){
                 $cat[]=intval($k);
             }
         }
         if(!empty($cat)){
-            $aperos=DB::table('aperos')->whereIn('tag_id', $cat)->andWhere('title', 'LIKE', $_GET['title'])->paginate(2);
+            $aperos=DB::table('aperos')->whereIn('tag_id', $cat)->where('title', 'LIKE', "%" . $title . "%")->orderBy('created_at', 'desc')->paginate(2);
         }else{
-            $aperos=DB::table('aperos')->where('title', 'LIKE', "%" . $_GET['title'] . "%")->paginate(2);
+            $aperos=DB::table('aperos')->where('title', 'LIKE', "%" . $title . "%")->orderBy('created_at', 'desc')->paginate(2);
         }
         $links = $aperos->links();
         return View::make('aperos.index', ['aperos'=>$aperos, 'links'=>$links]);
@@ -94,7 +97,7 @@ class AperoController extends \BaseController{
         $this->mailer->warnApero($user, $apero->title);
         $this->mailer->warnAdminApero($user, $apero->title);
         
-        Session::flash('messageAperoCreate', "<p class='success bg-success'><span class='glyphicon glyphicon-success' style='color:green;'></span>Success</p>");
+        Session::flash('messageAperoCreate', "<p class='success bg-success'><span class='glyphicon glyphicon-ok' style='color:green;'></span>Success</p>");
         return Redirect::to('apero')
                         ->with('message', 'success');
     }
@@ -137,6 +140,15 @@ class AperoController extends \BaseController{
      * @return Response
      */
     public function destroy($id){
-        
+        try{
+            if($this->users->isCanEdit($id)){
+                Apero::destroy($id);
+                Session::flash('messageAperoCreate', "<p class='success bg-success'><span class='glyphicon glyphicon-ok' style='color:green;'></span>Success in deleting/p>");
+                return Redirect::to('/aperos.index');
+            }
+        }catch (RuntimeException $e){
+            Session::flash('messageAperoDelete', "<p class='error bg-danger'><span class='glyphicon glyphicon-remove' style='color:red;'></span>". $e->getMessage() . "</p>");
+            return Redirect::back();
+        }
     }
 }
