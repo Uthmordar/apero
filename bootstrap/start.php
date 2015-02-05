@@ -25,10 +25,7 @@ $app = new Illuminate\Foundation\Application;
 */
 
 $env = $app->detectEnvironment(array(
-
-	'local' => array('homestead'),
-        'LEM-V3560-14' => array('testing')
-
+    'local' => array('homestead')
 ));
 
 /*

@@ -21,24 +21,35 @@ class AperoController extends \BaseController{
      * @return Response
      */
     public function index(){
-        if(empty($_GET) || isset($_GET['page'])){
-            $aperos=DB::table('aperos')->orderBy('created_at', 'desc')->paginate(2);
-            $links=$aperos->links();
-            return View::make('aperos.index', ['aperos'=>$aperos, 'links'=>$links]);
-        }
-        $title=($_GET['title'])? strip_tags(filter_input(INPUT_GET, 'title')) : '';
-        $cat=[];
-        foreach($_GET as $k=>$v){
-            if(is_int($k) && Tag::find($k)){
-                $cat[]=intval($k);
+        $data=Input::all();
+        if(Request::ajax() && $data['token']==Session::token()){
+            $title=($data['title'])? strip_tags(trim($data['title'])): '';
+            $tags=(!empty($data['tags']))? $data['tags'] : [];
+            $cat=[];
+            foreach($tags as $tag){
+                $tag=intval($tag);
+                if(is_int($tag) && Tag::find($tag)){
+                    $cat[]=$tag;
+                }
             }
+            if(!empty($cat)){
+                $aperos=DB::table('aperos')->whereIn('tag_id', $cat)->where('title', 'LIKE', "%" . $title . "%")->orderBy('created_at', 'desc')->get();
+            }else{
+                $aperos=DB::table('aperos')->where('title', 'LIKE', "%" . $title . "%")->orderBy('created_at', 'desc')->get();
+            }
+
+            $result=[];
+            if(!empty($aperos)){
+                foreach($aperos as $apero){
+                    $result[]="<li><h2><a href='" . url('/apero/'.$apero->id) . "'>" . $apero->title . "</a></h2></li>";
+                }
+            }
+            return $result;
+            die();
         }
-        if(!empty($cat)){
-            $aperos=DB::table('aperos')->whereIn('tag_id', $cat)->where('title', 'LIKE', "%" . $title . "%")->orderBy('created_at', 'desc')->paginate(2);
-        }else{
-            $aperos=DB::table('aperos')->where('title', 'LIKE', "%" . $title . "%")->orderBy('created_at', 'desc')->paginate(2);
-        }
-        $links = $aperos->links();
+        
+        $aperos=DB::table('aperos')->orderBy('created_at', 'desc')->paginate(3);
+        $links=$aperos->links();
         return View::make('aperos.index', ['aperos'=>$aperos, 'links'=>$links]);
     }
 
