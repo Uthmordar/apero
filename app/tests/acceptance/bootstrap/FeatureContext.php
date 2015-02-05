@@ -19,28 +19,21 @@ class FeatureContext implements Context, SnippetAcceptingContext{
      * Every scenario gets its own context object.
      * You can also pass arbitrary arguments to the context constructor through behat.yml.
      */
-    public function __construct()
-    {
+    public function __construct(){
     }
  
     /**
      * @BeforeScenario
      */
-    public function setUp()
-    {
-        if ( ! $this->app)
-        {
+    public function setUp(){
+        if (!$this->app){
             $this->refreshApplication();
         }
     }
       
-    
-    public function createApplication()
-    {
+    public function createApplication(){
         $unitTesting = true;
- 
         $testEnvironment = 'testing';
- 
         return require __DIR__.'/../../../../bootstrap/start.php';
     }
 }

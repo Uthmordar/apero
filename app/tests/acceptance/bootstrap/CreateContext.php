@@ -26,11 +26,6 @@ class CreateContext extends MinkContext implements SnippetAcceptingContext{
         Artisan::call('migrate');
         Artisan::call('db:seed');
     }
-    
-    public function tearDown() {
-       parent::tearDown();
-       Artisan::call('migrate:reset');
-    }
  
     /**
      * Creates the application.
@@ -110,5 +105,12 @@ class CreateContext extends MinkContext implements SnippetAcceptingContext{
      */
     public function iShouldSee($arg1){
          $this->assertPageContainsText($arg1);
+    }
+    
+    /**
+     * @Given I delete the last Apero
+     */
+    public function iDeleteTheLastApero(){
+        //Apero::truncate();
     }
 }

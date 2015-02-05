@@ -42,5 +42,5 @@
 
 @section('script')
 @parent
-    <script type='text/javascript' src='{{asset('assets/js/aperos.index.js')}}'></script>
+    <script type='text/javascript' src='{{asset('assets/js/dist/aperos.index.min.js')}}'></script>
 @stop

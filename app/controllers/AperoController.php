@@ -22,7 +22,10 @@ class AperoController extends \BaseController{
      */
     public function index(){
         $data=Input::all();
-        if(Request::ajax() && $data['token']==Session::token()){
+        if(Request::ajax()){
+            if($data['token']!=Session::token()){
+                return false;
+            }
             $title=($data['title'])? strip_tags(trim($data['title'])): '';
             $tags=(!empty($data['tags']))? $data['tags'] : [];
             $cat=[];
@@ -39,13 +42,11 @@ class AperoController extends \BaseController{
             }
 
             $result=[];
-            if(!empty($aperos)){
-                foreach($aperos as $apero){
-                    $result[]="<li><h2><a href='" . url('/apero/'.$apero->id) . "'>" . $apero->title . "</a></h2></li>";
-                }
+            foreach($aperos as $apero){
+                $result[]="<li><h2><a href='" . url('/apero/'.$apero->id) . "'>" . $apero->title . "</a></h2></li>";
             }
-            return $result;
-            die();
+            
+            return $result; die();
         }
         
         $aperos=DB::table('aperos')->orderBy('created_at', 'desc')->paginate(3);
@@ -76,7 +77,9 @@ class AperoController extends \BaseController{
             Session::flash('messageAperoCreate', "<p class='error bg-danger'><span class='glyphicon glyphicon-remove' style='color:red;'></span>Auth user required.</p>");
             throw new \RuntimeException('No user');
         }
+        
         $input=Input::all();
+        
         foreach($input as $k=>$v){
             if(is_string($v)){
                 $input[$k]=strip_tags($v);

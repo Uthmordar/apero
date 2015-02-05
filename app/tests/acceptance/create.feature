@@ -17,4 +17,7 @@ Scenario: Calculate total price
     When I submit press "Submit"
     Then I should be redirected on "/apero"
     Then I should message "success"
-    And I should see title "test_title" 
+    And I should see title "test_title"
+
+Scenario: Clear Post
+    Given I delete the last Apero

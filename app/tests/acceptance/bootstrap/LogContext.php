@@ -39,11 +39,7 @@ class LogContext extends MinkContext{
         Artisan::call('migrate');
         Artisan::call('db:seed');
     }
- 
-    public function tearDown() {
-       parent::tearDown();
-       Artisan::call('migrate:reset');
-    }
+
     /**
      * Creates the application.
      *
