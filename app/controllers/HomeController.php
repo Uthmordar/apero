@@ -19,8 +19,4 @@ class HomeController extends BaseController {
 
         return View::make('aperos.home', ['title'=>'Homepage', 'apero'=>$ap]);
     }
-
-    public function createApero(){
-        return View::make('aperos.create');
-    }
 }

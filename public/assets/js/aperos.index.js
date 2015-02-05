@@ -56,6 +56,6 @@
     var self=formAjax;
 })(window);
 
-$("document").ready(function(){
+$(document).ready(function(){
     window.formAjax.initialize($('#form_index'));
 });

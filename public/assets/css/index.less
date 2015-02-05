@@ -97,8 +97,8 @@
         background: #FFF;
         
         #last_apero{
-            width: 55%;
-            margin: 4*@margin;
+            width: 60%;
+            margin: 4*@margin 0 4*@margin 4*@margin;
             padding: 4*@padding;
             float: left;
             background: @color-grey;
@@ -126,7 +126,7 @@
         aside.left{
             width: 30%;
             margin: 4*@margin;
-            padding: @padding;
+            padding: 2*@padding;
             float: left;
             background: @color-grey;
             
@@ -145,11 +145,62 @@
     // -------------------------------------------
     //           APEROS.INDEX
     // -------------------------------------------
-    #aperos_list{
-        ul{
-            list-style: none;
-            margin: 0;
-            padding: 0;
+    .aperos_index{
+        width: 100%;
+        background: #FFF;
+        
+        #main_content{
+            width: 60%;
+            margin: 4*@margin 0 4*@margin 4*@margin;
+            padding: 4*@padding;
+            float: left;
+            background: @color-grey;
+            
+            h2{
+                margin: @margin 0;
+            }
+            
+            figure{
+                float: left;
+                margin: 0 1.5*@margin 1.5*@margin 0;
+            }
+            
+            a.read_more{
+                color: @color-blue;
+            }
+            
+            p.date{
+                margin: @margin auto;
+                max-width: 90%;
+                border-bottom: 1px solid black;
+            }
+            
+            #aperos_list{
+                ul{
+                    list-style: none;
+                    margin: 0;
+                    padding: 0;
+                }
+            }
+        }
+        
+        aside.left{
+            width: 30%;
+            margin: 4*@margin;
+            padding: 2*@padding;
+            float: left;
+            background: @color-grey;
+            
+            h3{
+                margin: 0.5*@margin 0;
+                border-bottom: 1px solid black;
+            }
+            
+            p{
+                margin-top: @margin;
+                font-size: 1.4*@font-size;
+                line-height: @font-size*1.7;
+            }
         }
     }
 }

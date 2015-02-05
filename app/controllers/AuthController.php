@@ -12,7 +12,7 @@ class AuthController extends BaseController{
     public function checkUser(){
         $validator=Validator::make(Input::all(), $this->users->getRules());
         if($validator->fails()){
-            return Redirect::back()->withInput()->withErrors($validator);
+            return Redirect::to('/login')->withInput()->withErrors($validator);
         }else{
             $userData=[];
             $userData['name']=Input::get('name');
@@ -23,7 +23,7 @@ class AuthController extends BaseController{
                 return Redirect::to('/apero/create');
             }else{
                 Session::flash('message', '<p>Pas de correspondance username/password.</p>');
-                return Redirect::back();
+                return Redirect::to('/login');
             }
         }
     }
