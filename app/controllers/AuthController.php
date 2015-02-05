@@ -21,10 +21,10 @@ class AuthController extends BaseController{
 
             if(Auth::attempt($userData, $remember)){
                 return Redirect::to('/apero/create');
-            }else{
-                Session::flash('message', '<p>Pas de correspondance username/password.</p>');
-                return Redirect::to('/login');
             }
+            
+            Session::flash('message', '<p>Pas de correspondance username/password.</p>');
+            return Redirect::to('/login');
         }
     }
 

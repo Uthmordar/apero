@@ -40,20 +40,14 @@ class User extends Eloquent implements UserInterface, RemindableInterface {
     public static function isCanEdit($aperoId){
         $user=Auth::user();
         $role=$user->role;
-        if($role=="admin"){
+        if($role=="administrator"){
             return self::adminDeleting();
-        }else if($role=="editor"){
-            return self::editorDeleting();
-        }else if($role=="author"){
+        }else if($role=="visitor"){
             return self::authorDeleting($aperoId);
         }
     }
     
     protected static function adminDeleting(){
-        return true;
-    }
-    
-    protected static function editorDeleting(){
         return true;
     }
     

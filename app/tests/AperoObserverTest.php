@@ -30,6 +30,15 @@ class AperoObserverTest extends TestCase {
             Apero::create(['title'=>'test', 'date'=>'2015-10-10', 'tag_id'=>1]);
             $this->assertEquals($i, Tag::find(1)->count_apero);
         }
+    }
+    
+    /**
+     * @test tag_count decrement on delete post
+     */
+    public function testDecrementsTag(){
+        for($i=1; $i<5; $i++){
+            Apero::create(['title'=>'test', 'date'=>'2015-10-10', 'tag_id'=>1]);
+        }
         for($i=5; $i>0; $i--){
             Apero::destroy($i);
             $this->assertEquals($i-1, Tag::find(1)->count_apero);

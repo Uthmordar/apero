@@ -1,6 +1,7 @@
 /bootstrap/compiled.php
 /vendor
 /node_modules
+/phpunit-report
 /public/assets/bower_components
 /public/uploads
 composer.phar
