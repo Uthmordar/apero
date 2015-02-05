@@ -15,7 +15,11 @@ class HomeController extends BaseController {
     */
     public function showHome(){
         $apero=DB::table('aperos')->orderBy('created_at', 'desc')->first();
-        $ap=Apero::findOrFail($apero->id);
+        if(isset($apero)){
+            $ap=Apero::findOrFail($apero->id);
+        }else{
+            $ap=null;
+        }
 
         return View::make('aperos.home', ['title'=>'Homepage', 'apero'=>$ap]);
     }

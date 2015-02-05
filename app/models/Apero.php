@@ -56,12 +56,12 @@ class Apero extends Eloquent{
      * @return type
      * @throws \RuntimeException
      */
-    public function createApero($apero, $input){
+    public function createApero($apero, $input, $uploader){
         $apero->title=$input['title'];
         $apero->content=($input['content'])? $input['content'] : '';
         $apero->date=strtotime($input['date']);
         if(Input::hasfile('file')){
-            $apero->url_thumbnail=$this->upload->uploadImage(Input::file('file'), 'messageAperoCreate', [120, 120]);
+            $apero->url_thumbnail=$uploader->uploadImage(Input::file('file'), 'messageAperoCreate', [120, 120]);
         }
         $apero->status='publish';
         if(!Tag::findOrFail($input['tag'])){

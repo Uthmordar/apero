@@ -10,23 +10,27 @@
 @section('content')
     <div class="home">
         <section id="last_apero" class="left">
-            <article>
-                <h2><a href="{{url('/apero/'.$apero->id)}}">{{$apero->title}}</a></h2>
-                @if($apero->url_thumbnail)
-                <figure>
-                    <img src="{{asset('../uploads/_min/'.$apero->url_thumbnail)}}" alt="thumbnail"/>
-                </figure>
+            @if($apero)
+                <article>
+                    <h2><a href="{{url('/apero/'.$apero->id)}}">{{$apero->title}}</a></h2>
+                    @if($apero->url_thumbnail)
+                    <figure>
+                        <img src="{{asset('../uploads/_min/'.$apero->url_thumbnail)}}" alt="thumbnail"/>
+                    </figure>
+                    @endif
+                    <p>{{$apero->content}}</p>
+                    <div class="clear"></div>
+                    <a class="read_more" href="{{url('/apero/'.$apero->id)}}">Read more...</a>
+                    <p class="date">Date: {{HelperDate::timeToStr('d F Y', $apero->date)}}</p>
+                </article>
+                @if($apero->tag)
+                    <p>{{$apero->tag->name}} ({{$apero->tag->count_apero}})<br/>
+                     PHPUnit is a unit testing framework for the PHP programming language. It is
+                     an instance of the xUnit architecture for unit testing frameworks that originated with 
+                     SUnit and became popular wuth lUnit</p>
                 @endif
-                <p>{{$apero->content}}</p>
-                <div class="clear"></div>
-                <a class="read_more" href="{{url('/apero/'.$apero->id)}}">Read more...</a>
-                <p class="date">Date: {{HelperDate::timeToStr('d F Y', $apero->date)}}</p>
-            </article>
-            @if($apero->tag)
-                <p>{{$apero->tag->name}} ({{$apero->tag->count_apero}})<br/>
-                 PHPUnit is a unit testing framework for the PHP programming language. It is
-                 an instance of the xUnit architecture for unit testing frameworks that originated with 
-                 SUnit and became popular wuth lUnit</p>
+            @else 
+            <h2>No aperos</h2>
             @endif
         </section>
         <aside class="left">

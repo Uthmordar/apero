@@ -93,7 +93,7 @@ class AperoController extends \BaseController{
 
         $apero=new Apero;
         try{
-            $this->aperos->createApero($apero, $input);
+            $this->aperos->createApero($apero, $input, $this->upload);
         }catch(RuntimeException $e){
             return Redirect::route('apero.create');
         }
